@@ -1,3 +1,12 @@
+## 1.6.2 (2018-8-23)
+
+### Bug Fixes
+
+- Inject the missing database for change password handler
+- Fix cloud asset filename encoding
+- Fix `make vendor` error on case insensitive file system
+- Support byte-range when serving asset file #616
+
 ## 1.6.1 (2018-7-06)
 
 ### Bug Fixes
