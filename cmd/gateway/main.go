@@ -12,7 +12,7 @@ import (
 
 	"github.com/skygeario/skygear-server/pkg/gateway/middleware"
 	"github.com/skygeario/skygear-server/pkg/gateway/db"
-	_ "github.com/skygeario/skygear-server/pkg/gateway/db/pq"
+	"github.com/skygeario/skygear-server/pkg/gateway/db/pq"
 )
 
 var routerMap map[string]*url.URL
@@ -72,7 +72,7 @@ func ensureDB() func() (db.Conn, error) {
 	logger := log.New()
 	// FIXME(carmenlau): Remove hard coded connection string
 	connOpener := func() (db.Conn, error) {
-		return db.Open(
+		return pq.Open(
 			context.Background(),
 			"postgres://postgres:@localhost/postgres?sslmode=disable",
 		)

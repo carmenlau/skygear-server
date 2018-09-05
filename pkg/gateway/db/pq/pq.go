@@ -94,6 +94,5 @@ func mustInitDB(db *sqlx.DB) error {
 }
 
 func init() {
-	db.Register(db.DriverFunc(Open))
 	go dbInitializer()
 }
