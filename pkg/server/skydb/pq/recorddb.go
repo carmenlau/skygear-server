@@ -95,7 +95,6 @@ func (db *database) GetByIDs(ids []skydb.RecordID, accessControlOptions *skydb.A
 		}
 		query = query.Where(aclSqlizer)
 	}
-
 	rows, err := db.c.QueryWith(query)
 	if err != nil {
 		logger.Debugf("Getting records by ID failed %v", err)
@@ -611,7 +610,7 @@ func columnSqlizersForSelect(recordType string, typemap skydb.RecordSchema) map[
 		}
 		var sqlizer sq.Sqlizer
 
-		if fieldType.Type == skydb.TypeReference && len(expr.KeyPathComponents()) == 2 {
+		if expr.IsKeyPath() && len(expr.KeyPathComponents()) >= 2 {
 			// For field like category.name should be prefixed by reference table name
 			sqlizer = builder.NewExpressionSqlizer(fieldType.ReferenceType, fieldType, expr)
 		} else {
