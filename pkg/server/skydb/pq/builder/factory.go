@@ -15,6 +15,7 @@
 package builder
 
 import (
+	"errors"
 	"fmt"
 
 	sq "github.com/lann/squirrel"
@@ -259,6 +260,41 @@ func (f *sqlizerFactory) newExpressionPredicateSqlizerForKeyPath(expr skydb.Expr
 	return newExpressionSqlizer(alias, field, expr), nil
 }
 
+func (f *sqlizerFactory) newExpressionSortForKeyPath(expr skydb.Expression) (string, error) {
+	if !expr.IsKeyPath() {
+		panic("expression is not a key path")
+	}
+
+	components := expr.KeyPathComponents()
+	keyPath := expr.Value.(string)
+	if len(components) > 2 {
+		return "", skyerr.NewErrorf(skyerr.RecordQueryInvalid,
+			`keypath "%s" with more than 2 components is not supported`, keyPath)
+	}
+
+	alias := f.primaryTable
+	fields, err := skydb.TraverseColumnTypes(f.db, f.primaryTable, keyPath)
+	if err != nil {
+		return "", skyerr.NewError(skyerr.RecordQueryInvalid, err.Error())
+	}
+
+	field := skydb.FieldType{}
+	for i, keyPathField := range fields {
+		isLast := (i == len(components)-1)
+		field = keyPathField
+		if field.Type == skydb.TypeReference && !isLast {
+			alias = f.createLeftJoin(field.ReferenceType, components[i], "_id")
+		}
+	}
+	lastComponent := components[len(components)-1]
+	sortKey := fullQuoteIdentifier(alias, lastComponent)
+	if alias != f.primaryTable {
+		sortKey = "_sort" + lastComponent + alias
+		f.addExtraColumn(sortKey, skydb.TypeReference, expr, alias)
+	}
+	return sortKey, nil
+}
+
 // createLeftJoin create an alias of a table to be joined to the primary table
 // and return the alias for the joined table
 func (f *sqlizerFactory) createLeftJoin(secondaryTable string, primaryColumn string, secondaryColumn string) string {
@@ -329,33 +365,29 @@ func (a joinedTable) equal(b joinedTable) bool {
 	return a.secondaryTable == b.secondaryTable && a.primaryColumn == b.primaryColumn && a.secondaryColumn == b.secondaryColumn
 }
 
-	expr := s.Expression
-	if expr.IsKeyPath() && len(expr.KeyPathComponents()) == 2 {
-		_, err := f.newExpressionSqlizerForKeyPath(expr, true)
 func (f *sqlizerFactory) NewSort(s skydb.Sort) (string, error) {
+	var expr string
+	switch s.Expression.Type {
+	case skydb.KeyPath:
+		var err error
+		expr, err = f.newExpressionSortForKeyPath(s.Expression)
 		if err != nil {
 			return "", err
 		}
-		order, err := sortOrderOrderBySQL(s.Order)
+	case skydb.Function:
+		var err error
+		expr, err = funcOrderBySQL(f.primaryTable, s.Expression.Value.(skydb.Func))
 		if err != nil {
 			return "", err
 		}
-		deprecatedSortKey := ""
-		for key, field := range f.extraColumns {
-			if field.Expression == expr {
-				deprecatedSortKey = key
-				break
-			}
-		}
-		if deprecatedSortKey != "" {
-			// replace by new key with prefix _sort
-			sortKey := "_sort" + deprecatedSortKey
-			f.extraColumns[sortKey] = f.extraColumns[deprecatedSortKey]
-			delete(f.extraColumns, deprecatedSortKey)
-			return sortKey + " " + order, nil
-		}
-		return "", skyerr.NewErrorf(skyerr.RecordQueryInvalid,
-			`Cannot find field for keypath "%s" within f.extraColumns`, expr.Value.(string))
+	default:
+		return "", errors.New("invalid Sort: specify either KeyPath or Func")
 	}
-	return SortOrderBySQL(f.primaryTable, s)
+
+	order, err := sortOrderOrderBySQL(s.Order)
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf(expr + " " + order), nil
 }
