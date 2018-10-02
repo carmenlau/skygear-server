@@ -38,10 +38,10 @@ func TestPredicateSqlizerFactory(t *testing.T) {
 				}, nil,
 			).AnyTimes()
 
-		f := NewPredicateSqlizerFactory(db, "note").(*predicateSqlizerFactory)
+		f := NewSqlizerFactory(db, "note").(*sqlizerFactory)
 
 		Convey("existing keypath", func() {
-			sqlizer, err := f.newExpressionSqlizer(
+			sqlizer, err := f.newExpressionPredicateSqlizer(
 				skydb.Expression{skydb.KeyPath, "title"},
 			)
 			So(err, ShouldBeNil)
@@ -52,7 +52,7 @@ func TestPredicateSqlizerFactory(t *testing.T) {
 		})
 
 		Convey("non-existing keypath", func() {
-			_, err := f.newExpressionSqlizer(
+			_, err := f.newExpressionPredicateSqlizer(
 				skydb.Expression{skydb.KeyPath, "wrong_title"},
 			)
 			builderError, ok := err.(skyerr.Error)
@@ -74,7 +74,7 @@ func TestPredicateSqlizerFactory(t *testing.T) {
 				}, nil,
 			).AnyTimes()
 
-		f := NewPredicateSqlizerFactory(db, "note").(*predicateSqlizerFactory)
+		f := NewSqlizerFactory(db, "note").(*sqlizerFactory)
 
 		Convey("keypath equal null", func() {
 			sqlizer, err := f.newComparisonPredicateSqlizer(skydb.Predicate{
@@ -169,7 +169,7 @@ func TestPredicateSqlizerFactory(t *testing.T) {
 
 		db := mock_skydb.NewMockDatabase(ctrl)
 
-		f := NewPredicateSqlizerFactory(db, "note").(*predicateSqlizerFactory)
+		f := NewSqlizerFactory(db, "note").(*sqlizerFactory)
 
 		expr1 := skydb.Expression{
 			skydb.Function,

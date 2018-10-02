@@ -15,35 +15,10 @@
 package builder
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/skygeario/skygear-server/pkg/server/skydb"
 )
-
-func SortOrderBySQL(alias string, sort skydb.Sort) (string, error) {
-	var expr string
-
-	switch sort.Expression.Type {
-	case skydb.KeyPath:
-		expr = fullQuoteIdentifier(alias, sort.Expression.Value.(string))
-	case skydb.Function:
-		var err error
-		expr, err = funcOrderBySQL(alias, sort.Expression.Value.(skydb.Func))
-		if err != nil {
-			return "", err
-		}
-	default:
-		return "", errors.New("invalid Sort: specify either KeyPath or Func")
-	}
-
-	order, err := sortOrderOrderBySQL(sort.Order)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf(expr + " " + order), nil
-}
 
 // due to sq not being able to pass args in OrderBy, we can't re-use funcToSQLOperand
 func funcOrderBySQL(alias string, fun skydb.Func) (string, error) {
