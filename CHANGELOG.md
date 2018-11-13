@@ -1,3 +1,10 @@
+## 1.6.3 (2018-11-13)
+
+### Bug Fixes
+
+- Fix fs asset filename encoding issue
+
+
 ## 1.6.2 (2018-8-23)
 
 ### Bug Fixes
