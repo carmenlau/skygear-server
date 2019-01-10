@@ -191,13 +191,6 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:348b8f460dd2b48cd7eeedacc82d9da6ecacb10a0dc1e5637ebb8bf42756124f"
-  name = "github.com/google/go-gcm"
-  packages = ["."]
-  pruneopts = ""
-  revision = "423613e2e8f11e71023c75ae2dd7e27105326cbf"
-
-[[projects]]
   digest = "1:55c1b46a80db2baf4d762c1d0b5cb4946e46125baa02b8959310abab15b54aee"
   name = "github.com/googleapis/gax-go"
   packages = [
@@ -691,6 +684,14 @@
   revision = "df014850f6dee74ba2fc94874043a9f3f75fbfd8"
   version = "v1.17.0"
 
+[[projects]]
+  digest = "1:bca3183c35fbb10806e913cee67bdaa751f90ee63c929cc86ec20b9e2bd95678"
+  name = "gopkg.in/maddevsio/fcm.v1"
+  packages = ["."]
+  pruneopts = ""
+  revision = "4130b76cf1809bfa9d94bcb2aeecc687fa3ead35"
+  version = "v1.0.4"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -711,7 +712,6 @@
     "github.com/garyburd/redigo/redis",
     "github.com/golang/mock/gomock",
     "github.com/golang/mock/mockgen",
-    "github.com/google/go-gcm",
     "github.com/gorilla/websocket",
     "github.com/jarcoal/httpmock",
     "github.com/jmoiron/sqlx",
@@ -735,6 +735,7 @@
     "golang.org/x/tools/cmd/cover",
     "golang.org/x/tools/cmd/stringer",
     "google.golang.org/api/option",
+    "gopkg.in/maddevsio/fcm.v1",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
