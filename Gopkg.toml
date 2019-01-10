@@ -60,10 +60,6 @@ required = [
   version = "~1.0.0"
 
 [[constraint]]
-  name = "github.com/google/go-gcm"
-  revision = "423613e2e8f11e71023c75ae2dd7e27105326cbf"
-
-[[constraint]]
   name = "github.com/gorilla/websocket"
   revision = "b6ab76f1fe9803ee1d59e7e5b2a797c1fe897ce5"
 
@@ -146,3 +142,7 @@ required = [
 [[constraint]]
   name = "google.golang.org/api"
   version = "v0.1.0"
+
+[[constraint]]
+  name = "gopkg.in/maddevsio/fcm.v1"
+  version = "v1.0.4"
