@@ -249,14 +249,6 @@
   revision = "4ed13390c0acd2ff4e371e64d8b97c8954138243"
 
 [[projects]]
-  branch = "master"
-  digest = "1:ef0f9731bc6c3c59396adc50f36da36ca98c704812c449794f9326f7bc64b5f1"
-  name = "github.com/jpillora/backoff"
-  packages = ["."]
-  pruneopts = ""
-  revision = "8eab2debe79d12b7bd3d10653910df25fa9552ba"
-
-[[projects]]
   digest = "1:d8ead22d381cfed54d53be7d935eb0f9f2b75889a4fb595802844b805dc13b87"
   name = "github.com/jtolds/gls"
   packages = ["."]
@@ -304,14 +296,6 @@
   ]
   pruneopts = ""
   revision = "8c6ee72f3e6bcb1542298dd5f76cb74af9742cec"
-
-[[projects]]
-  branch = "master"
-  digest = "1:45ba10cfa29dd58654be8996120d3cb89d8c48805f13bbb7e4d098d5df35f233"
-  name = "github.com/mattn/go-xmpp"
-  packages = ["."]
-  pruneopts = ""
-  revision = "44c76a8761681b259e6013e9f442df96735a723a"
 
 [[projects]]
   digest = "1:65a4ff6c72881f9ff4e42eb348feb24fb01b10409b30aef36d27cc95130d58df"
@@ -367,14 +351,6 @@
   pruneopts = ""
   revision = "aa3713dea4327980f5891ac781c6f1a45ea75c0f"
   version = "v1.3.1"
-
-[[projects]]
-  digest = "1:63e142fc50307bcb3c57494913cfc9c12f6061160bdf97a678f78c71615f939b"
-  name = "github.com/pborman/uuid"
-  packages = ["."]
-  pruneopts = ""
-  revision = "e790cca94e6cc75c7064b1332e63811d4aae1a53"
-  version = "v1.1"
 
 [[projects]]
   branch = "master"
@@ -543,12 +519,11 @@
   revision = "d668ce993890a79bda886613ee587a69dd5da7a6"
 
 [[projects]]
-  branch = "master"
-  digest = "1:9c286cf11d0ca56368185bada5dd6d97b6be4648fc26c354fcba8df7293718f7"
+  digest = "1:1132cbdac95d6a2a30f7434f7190b3b1345e85b6071e74911b1dce3e19e1543d"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c"
+  revision = "1c9583448a9c3aa0f9a6a5241bf73c0bd8aafded"
 
 [[projects]]
   branch = "master"
@@ -732,6 +707,7 @@
     "github.com/smartystreets/goconvey/convey",
     "github.com/twinj/uuid",
     "golang.org/x/crypto/bcrypt",
+    "golang.org/x/sys/unix",
     "golang.org/x/tools/cmd/cover",
     "golang.org/x/tools/cmd/stringer",
     "google.golang.org/api/option",
