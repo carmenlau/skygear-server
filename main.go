@@ -532,11 +532,19 @@ func initPushSender(config skyconfig.Configuration, connOpener func() (skydb.Con
 		routeSender.Route("aps", apns)
 		routeSender.Route("ios", apns)
 	}
+	if config.FCM.Enable {
+		fcm := initFCMPusher(config)
+		routeSender.Route("fcm", fcm)
+		routeSender.Route("android", fcm)
+	}
 	if config.GCM.Enable {
 		gcm := initGCMPusher(config)
 		routeSender.Route("gcm", gcm)
-		routeSender.Route("android", gcm)
+		if !config.FCM.Enable {
+			routeSender.Route("android", gcm)
+		}
 	}
+
 	if config.Baidu.Enable {
 		baidu := initBaiduPusher(config)
 		routeSender.Route("baidu-android", baidu)
@@ -631,6 +639,23 @@ func initTokenBasedAPNSPusher(
 
 func initGCMPusher(config skyconfig.Configuration) *push.GCMPusher {
 	return &push.GCMPusher{APIKey: config.GCM.APIKey}
+}
+
+func initFCMPusher(config skyconfig.Configuration) *push.FCMPusher {
+	logger := logging.LoggerEntryWithTag("main", "push")
+	key := config.FCM.ServiceAccount.Key
+	keyPath := config.FCM.ServiceAccount.KeyPath
+	if key == "" && keyPath != "" {
+		keyBytes, err := ioutil.ReadFile(keyPath)
+		if err != nil {
+			logger.Fatalf("Failed to load fcm service account key: %v", err)
+		}
+		key = string(keyBytes)
+	}
+
+	return &push.FCMPusher{
+		ServiceAccountKey: key,
+	}
 }
 
 func initBaiduPusher(config skyconfig.Configuration) *push.BaiduPusher {
