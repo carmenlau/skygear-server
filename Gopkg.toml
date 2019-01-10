@@ -138,3 +138,11 @@ required = [
 [[constraint]]
   branch = "master"
   name = "github.com/kr/text"
+
+[[constraint]]
+  name = "firebase.google.com/go"
+  version = "v3.5.0"
+
+[[constraint]]
+  name = "google.golang.org/api"
+  version = "v0.1.0"

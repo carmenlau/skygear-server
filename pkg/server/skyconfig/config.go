@@ -198,6 +198,13 @@ type Configuration struct {
 		Enable bool   `json:"enable"`
 		APIKey string `json:"api_key"`
 	} `json:"gcm"`
+	FCM struct {
+		Enable         bool `json:"enable"`
+		ServiceAccount struct {
+			Key     string `json:"key"`
+			KeyPath string `json:"-"`
+		} `json:"service_account"`
+	} `json:"fcm"`
 	Baidu struct {
 		Enable    bool   `json:"enable"`
 		APIKey    string `json:"api_key"`
@@ -262,6 +269,7 @@ func NewConfiguration() Configuration {
 	config.APNS.Keepalive = 180
 	config.GCM.Enable = false
 	config.Baidu.Enable = false
+	config.FCM.Enable = false
 	config.LOG.Level = "debug"
 	config.LOG.LoggersLevel = map[string]string{
 		"plugin": "info",
@@ -392,6 +400,7 @@ func (config *Configuration) ReadFromEnv() {
 	config.readAssetStore()
 	config.readAPNS()
 	config.readGCM()
+	config.readFCM()
 	config.readBaidu()
 	config.readLog()
 	config.readPlugins()
@@ -585,6 +594,22 @@ func (config *Configuration) readGCM() {
 	gcmAPIKey := os.Getenv("GCM_APIKEY")
 	if gcmAPIKey != "" {
 		config.GCM.APIKey = gcmAPIKey
+	}
+}
+
+func (config *Configuration) readFCM() {
+	if shouldEnableFCM, err := parseBool(os.Getenv("FCM_ENABLE")); err == nil {
+		config.FCM.Enable = shouldEnableFCM
+	}
+
+	fcmServiceAccountKey := os.Getenv("FCM_SERVICE_ACCOUNT_KEY")
+	if fcmServiceAccountKey != "" {
+		config.FCM.ServiceAccount.Key = fcmServiceAccountKey
+	}
+
+	fcmServiceAccountKeyPath := os.Getenv("FCM_SERVICE_ACCOUNT_KEY_PATH")
+	if fcmServiceAccountKeyPath != "" {
+		config.FCM.ServiceAccount.KeyPath = fcmServiceAccountKeyPath
 	}
 }
 
