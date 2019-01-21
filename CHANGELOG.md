@@ -1,3 +1,11 @@
+## 1.7.0 (2019-01-21)
+
+### Other notes
+
+- Add tcp keepalive option for APNS connection
+- Migrate to FCM from GCM for android push notification SkygearIO/skygear-SDK-Android#254
+
+
 ## 1.6.3 (2018-11-13)
 
 ### Bug Fixes
