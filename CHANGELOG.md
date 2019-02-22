@@ -1,3 +1,14 @@
+## 1.7.1 (2019-02-22)
+
+### Bug Fixes
+
+- Fix server crash when receiving pq listener event=2
+
+### Other notes
+
+- Replace `paulmach/go.geo` with `paulmach/orb`
+- Update docker based image to alpine:3.8
+
 ## 1.7.0 (2019-01-21)
 
 ### Other notes
