@@ -142,6 +142,15 @@ docker run --rm --network=host skygear-migrate \
         -schema=app_${APPNAME} \
         -database=${DATABASE_URL} \
         up
+
+# For development, Docker Desktop for Mac doesn't support host network
+# If you need to run migration to the local db, we can use the special DNS name as the db host
+export DATABASE_URL="postgres://postgres:@host.docker.internal:5432/postgres?sslmode=disable"
+docker run --rm skygear-migrate \
+        -module=core \
+        -schema=app_${APPNAME} \
+        -database=${DATABASE_URL} \
+        up
 ```
 
 ## License & Copyright
