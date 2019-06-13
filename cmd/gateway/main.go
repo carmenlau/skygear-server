@@ -94,6 +94,7 @@ func main() {
 		RestPathIdentifier: "rest",
 		Store:              store,
 	}.Handle)
+	cr.Use(coreMiddleware.CORSMiddleware{}.Handle)
 
 	cr.Use(middleware.Injecter{
 		MiddlewareFactory: middleware.AuthInfoMiddlewareFactory{},
